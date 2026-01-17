@@ -13,12 +13,14 @@ import { z } from 'zod';
 const emailSchema = z.string().email('Invalid email address').max(255);
 const passwordSchema = z.string().min(6, 'Password must be at least 6 characters').max(100);
 const nameSchema = z.string().trim().nonempty('Name is required').max(100);
+const phoneSchema = z.string().trim().nonempty('Phone number is required').regex(/^[\d\s\-+()]+$/, 'Invalid phone number format').max(20);
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
+  const [phone, setPhone] = useState('');
   const [role, setRole] = useState<'buyer' | 'seller'>('buyer');
   const [loading, setLoading] = useState(false);
   const { signIn, signUp, user } = useAuth();
@@ -37,6 +39,9 @@ export default function Auth() {
       passwordSchema.parse(password);
       if (!isLogin) {
         nameSchema.parse(fullName);
+        if (role === 'seller') {
+          phoneSchema.parse(phone);
+        }
       }
       return true;
     } catch (error) {
@@ -83,7 +88,7 @@ export default function Auth() {
           navigate('/');
         }
       } else {
-        const { error } = await signUp(email, password, fullName, role);
+        const { error } = await signUp(email, password, fullName, role, role === 'seller' ? phone : undefined);
         if (error) {
           if (error.message.includes('already registered')) {
             toast({
@@ -215,6 +220,22 @@ export default function Auth() {
                     </div>
                   </RadioGroup>
                 </div>
+                {role === 'seller' && (
+                  <div className="space-y-2">
+                    <Label htmlFor="signup-phone">Phone Number *</Label>
+                    <Input
+                      id="signup-phone"
+                      type="tel"
+                      placeholder="+92 300 1234567"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      required
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Required for buyers to contact you
+                    </p>
+                  </div>
+                )}
                 <Button type="submit" className="w-full" disabled={loading}>
                   {loading ? 'Creating account...' : 'Create Account'}
                 </Button>
