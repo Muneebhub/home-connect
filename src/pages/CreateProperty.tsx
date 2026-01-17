@@ -20,6 +20,7 @@ const propertySchema = z.object({
   price: z.number().positive('Price must be greater than 0'),
   bedrooms: z.number().int().nonnegative('Bedrooms must be 0 or greater'),
   bathrooms: z.number().int().nonnegative('Bathrooms must be 0 or greater'),
+  phone: z.string().trim().min(10, 'Phone number is required for buyers to contact you').max(20),
 });
 
 export default function CreateProperty() {
@@ -41,6 +42,7 @@ export default function CreateProperty() {
     area_sqft: '',
     available_from: '',
     available_to: '',
+    phone: '',
   });
 
   const handleChange = (field: string, value: string) => {
@@ -86,6 +88,7 @@ export default function CreateProperty() {
         price: parseFloat(formData.price),
         bedrooms: parseInt(formData.bedrooms),
         bathrooms: parseInt(formData.bathrooms),
+        phone: formData.phone,
       });
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -239,15 +242,28 @@ export default function CreateProperty() {
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="location">Location *</Label>
-                <Input
-                  id="location"
-                  placeholder="e.g., 123 Main St, San Francisco, CA"
-                  value={formData.location}
-                  onChange={(e) => handleChange('location', e.target.value)}
-                  required
-                />
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="location">Location *</Label>
+                  <Input
+                    id="location"
+                    placeholder="e.g., DHA Phase 5, Lahore"
+                    value={formData.location}
+                    onChange={(e) => handleChange('location', e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="phone">Contact Phone * (for WhatsApp)</Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    placeholder="+92 300 1234567"
+                    value={formData.phone}
+                    onChange={(e) => handleChange('phone', e.target.value)}
+                    required
+                  />
+                </div>
               </div>
 
               <div className="grid md:grid-cols-3 gap-4">
