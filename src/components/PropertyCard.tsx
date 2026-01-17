@@ -64,7 +64,7 @@ export default function PropertyCard({
         </CardContent>
         <CardFooter className="px-4 pb-4">
           <div className="text-2xl font-bold text-primary">
-            ${price.toLocaleString()}
+            PKR {price.toLocaleString()}
             {propertyType === 'rent' && <span className="text-sm font-normal text-muted-foreground">/mo</span>}
           </div>
         </CardFooter>

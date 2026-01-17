@@ -151,7 +151,7 @@ export default function PropertyDetail() {
           <div className="lg:col-span-1">
             <div className="sticky top-24 bg-card p-6 rounded-lg border shadow-sm">
               <div className="text-3xl font-bold text-primary mb-6">
-                ${property.price.toLocaleString()}
+                PKR {property.price.toLocaleString()}
                 {property.property_type === 'rent' && (
                   <span className="text-base font-normal text-muted-foreground">/mo</span>
                 )}

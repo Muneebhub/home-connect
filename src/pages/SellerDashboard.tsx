@@ -165,7 +165,7 @@ export default function SellerDashboard() {
                   <div className="flex gap-6 text-sm text-muted-foreground">
                     <span>
                       <strong className="text-primary text-xl">
-                        ${property.price.toLocaleString()}
+                        PKR {property.price.toLocaleString()}
                       </strong>
                       {property.property_type === 'rent' && '/mo'}
                     </span>

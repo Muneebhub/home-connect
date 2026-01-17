@@ -8,7 +8,7 @@ interface AuthContextType {
   session: Session | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
-  signUp: (email: string, password: string, fullName: string, role: 'buyer' | 'seller') => Promise<{ error: any }>;
+  signUp: (email: string, password: string, fullName: string, role: 'buyer' | 'seller', phone?: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
   userRole: 'buyer' | 'seller' | null;
 }
@@ -77,7 +77,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error };
   };
 
-  const signUp = async (email: string, password: string, fullName: string, role: 'buyer' | 'seller') => {
+  const signUp = async (email: string, password: string, fullName: string, role: 'buyer' | 'seller', phone?: string) => {
     const redirectUrl = `${window.location.origin}/`;
     
     const { error } = await supabase.auth.signUp({
@@ -88,6 +88,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         data: {
           full_name: fullName,
           role: role,
+          phone: phone,
         },
       },
     });
